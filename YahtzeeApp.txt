@@ -1,0 +1,116 @@
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.Scanner;
+
+public class YahtzeeApp {
+
+	public static void main(String args[]) {
+		
+		YahtzeeGame yahtzeeGame = new YahtzeeGame();
+		yahtzeeGame.play();
+		
+	}
+	
+}
+
+class YahtzeeGame {
+
+	ArrayList<Dice> dices = new ArrayList<Dice>();
+	Dice dice1 = new Dice();
+	Dice dice2 = new Dice();
+	Dice dice3 = new Dice();
+	Dice dice4 = new Dice();
+	Dice dice5 = new Dice();
+	int player1;
+	int player2;
+	
+	void play() {
+		
+		dices.add(dice1);
+		dices.add(dice2);
+		dices.add(dice3);
+		dices.add(dice4);
+		dices.add(dice5);
+
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("yahtzee.\n-> hit 'enter' to roll the dice or 'q' to quit the game.\n-> player 1's turn ...");
+		
+		for (int i = 0; i < 2; ) {
+			
+			String input = sc.nextLine();	
+			
+			if (input.equals("q")) {
+				System.out.println("-> you left the game.");
+				System.exit(0);	
+				
+			}	
+			
+			if (input.equals("")) {
+		
+				dice1.roll();
+				dice2.roll();
+				dice3.roll();
+				dice4.roll();
+				dice5.roll();
+				System.out.println("[ " + dice1.save() + " | " + dice2.save() + " | " + dice3.save() + " | " + dice4.save() + " | " + dice5.save() + " ]");			
+				System.out.println("\n-> which positions would you like to save? (e.g. '4' will save the 4th position).");
+				input = sc.nextLine();
+				if (input.contains("1") == false) dice1.roll();
+				if (input.contains("2") == false) dice2.roll();
+				if (input.contains("3") == false) dice3.roll();
+				if (input.contains("4") == false) dice4.roll();
+				if (input.contains("5") == false) dice5.roll();
+				if (input.equals("q")) {
+					System.out.println("-> you left the game.");
+					System.exit(0);	
+					
+				}	
+				
+				System.out.println("[ " + dice1.save() + " | " + dice2.save() + " | " + dice3.save() + " | " + dice4.save() + " | " + dice5.save() + " ]");
+
+				if (i == 0) {
+					player1 = dice1.save() + dice2.save() + dice3.save() + dice4.save() + dice5.save();
+					System.out.println("-> player 1 scores " + player1 + ".\n-> player 2's turn ...");
+					
+				} else {
+					player2 = dice1.save() + dice2.save() + dice3.save() + dice4.save() + dice5.save();
+					System.out.println("-> player 2 scores " + player2 + ".");
+					
+				}
+				
+				i++;
+				
+			}
+		
+		}
+		
+		if (player1 > player2) System.out.println("-> player 1 wins.");
+		else if (player1 == player2) System.out.println("-> it is a tie.");
+		else System.out.println("-> player 2 wins.");
+		
+		System.out.println("-> game over.");
+		
+	}
+
+}
+
+class Dice {
+
+	int rollValue;
+	
+	
+	int roll() {
+		
+		rollValue = ThreadLocalRandom.current().nextInt(1, 7);
+		return rollValue;
+		
+	}
+	
+	int save() {
+			
+		return rollValue;
+			
+	}
+	
+}
